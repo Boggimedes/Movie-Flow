@@ -35,9 +35,9 @@
 
 <img id="volume" onmouseover="volactive('volume');" onmouseout="scrollactive('volume');" src="updown.png" usemap="#imgmap201519145956"/>
 <map id="imgmap201519145956" name="imgmap201519145956">
-<area shape="poly" id="vup" coords="34,0,0,35,16,34,16,58,52,58,52,35,67,35,65,33,65,33" onmouseover="volactive('vup');" onmouseout="scrollactive('vup');" style="cursor:pointer;" href="#" target="" onclick="$.post( '204.php',{vol: 'MVLUP'});"/>
-<area shape="poly" id="vdown" coords="82,104,48,68,64,69,64,46,99,46,99,68,115,69" onmouseover="volactive('vdown');" onmouseout="scrollactive('vdown');" style="cursor:pointer;" href="#" target=""  onclick="$.post( '204.php',{vol: 'MVLDOWN'});"/></map>
-<div id="mute" onclick='if(this.innerHTML=="Mute"){$.post( "204.php",{vol: "AMT01"});this.innerHTML="UnMute";}else{$.post( "204.php",{vol: "AMT00"});this.innerHTML="Mute";}'>Mute</div>
+<area shape="poly" id="vup" coords="34,0,0,35,16,34,16,58,52,58,52,35,67,35,65,33,65,33" onmouseover="volactive('vup');" onmouseout="scrollactive('vup');" style="cursor:pointer;" href="#" target="" onclick="$.post( 'tcp.php',{vol: 'MVLUP'});"/>
+<area shape="poly" id="vdown" coords="82,104,48,68,64,69,64,46,99,46,99,68,115,69" onmouseover="volactive('vdown');" onmouseout="scrollactive('vdown');" style="cursor:pointer;" href="#" target=""  onclick="$.post( 'tcp.php',{vol: 'MVLDOWN'});"/></map>
+<div id="mute" onclick='if(this.innerHTML=="Mute"){$.post( "tcp.php",{vol: "AMT01"});this.innerHTML="UnMute";}else{$.post( "tcp.php",{vol: "AMT00"});this.innerHTML="Mute";}'>Mute</div>
 <img id="playpause" src="play.png" onclick="$.post( 'http://htpc:13579/command.html',{'wm_command': '889', 'submit': 'Go!'});"/>
 <img id="stop" src="stop.png" onclick="$.post( 'http://htpc:13579/command.html',{'wm_command': '890', 'submit': 'Go!'});"/>
 <img id="fullscreen" src="fullscreen.png" onclick="$.post( 'http://htpc:13579/command.html',{'wm_command': '830', 'submit': 'Go!'});"/>

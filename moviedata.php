@@ -1,36 +1,12 @@
 <?php 
 define("HOST", "localhost");     // The host you want to connect to.
 define("USER", "localadmin");    // The database username. 
-define("PASSWORD", "We@im2msBhave");    // The database password. 
+define("PASSWORD", "password");    // The database password. 
 define("DATABASE", "server");    // The database name.
  
 
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 $link = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
-		
-if($_GET['type'] == 'new'){
-$sql = "SELECT * FROM server.MyMovies WHERE New = 'Y' ORDER BY SortTitle";
-$mrows = 1;
-$sz1 = 540;
-$sz2 = 500;
-$sz3 = 700;
-}
-elseif($_GET['type'] == 'classic'){
-$sql = "SELECT * FROM server.MyMovies WHERE Classic = 'Y' ORDER BY SortTitle";
-$mrows = 2;
-$sz1 = 359;
-$sz2 = 320;
-$sz3 = 320;
-}
-else{
-$sql = "SELECT * FROM server.MyMovies WHERE `Classic` = 'N' AND `New` is null ORDER BY SortTitle";
-$mrows = 2;
-$sz1 = 359;
-$sz2 = 320;
-$sz3 = 320;
-}
-
-
 
 $results = mysqli_query($link,$sql);
 $i=0;
