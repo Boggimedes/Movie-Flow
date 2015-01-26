@@ -232,11 +232,18 @@ input[type=checkbox]:disabled + label.checkbox-label {
       height: 140px;
       position: relative;
       margin: 0 auto 40px;
-      -webkit-perspective: 1100px;
+	      -webkit-perspective: 1100px;
          -moz-perspective: 1100px;
            -o-perspective: 1100px;
               perspective: 1100px;
     }
+	
+	.container .perspective{
+	      -webkit-perspective: 1100px;
+         -moz-perspective: 1100px;
+           -o-perspective: 1100px;
+              perspective: 1100px;
+}
 	
 	
 	    #carousel {
@@ -310,24 +317,6 @@ background-color:black;
 	margin-right: 10px;
 	float: left;
 	}
-
-#selectable2 .ui-selecting { background: #f7f7f7; }
-#selectable2 .ui-selected { background: #ced1d0; color: #565656; }
-#selectable2 { list-style-type: none; margin: 0; padding: 0;  }
-
-#selectable2 li {
-	outline: none;
-	border: 1px solid #cccccc;
-	box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.1), inset 0px 1px 0px 0px rgba(255, 255, 255, 1), inset 0px 1px 6px 0px rgba(0, 0, 0, 0.05);
-	border-radius: 3px;
-	padding: 7px 10px;
-	background: #858c8a;
-	color: #b5b5b5;
-	margin-bottom: 10px;
-	margin-right: 10px;
-	float: left;
-	}
-	
 	
 	.folder{
 margin:10px;

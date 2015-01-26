@@ -1,138 +1,106 @@
-var $currentlySelected = null;
-var $currentlySelected2 = null;
-var selected1 = [];
-var selected2 = [];
-var Q6="";
-var Q1="";
-var classNames;
-var filtered = 0;
-
-$(function() {
-$('#selectable').selectable({
-    start: function(event, ui) {
-        $currentlySelected = $('#selectable .ui-selected');
-    },
-    stop: function(event, ui) {
-        for (var i = 0; i < selected1.length; i++) {
-            if ($.inArray(selected1[i], $currentlySelected) >= 0) {
-              $(selected1[i]).removeClass('ui-selected');
-            }
-        }
-        selected1 = [];
-    
-		Q6 = "";
-		$( ".ui-selected", this ).each(function() {
-		var index = $( "#selectable li" ).index( this );
-		Q6 = Q6 + "" + ( ( index + 1 )  );
-		
-		});
-
-	},
-    selecting: function(event, ui) {
-        $currentlySelected.addClass('ui-selected'); // re-apply ui-selected class to currently selected items
-    },
-    selected: function(event, ui) {
-        selected1.push(ui.selected); 
-    }
-});
-
-
-$('#selectable2').selectable({
-    start: function(event, ui) {
-        $currentlySelected2 = $('#selectable2 .ui-selected');
-    },
-    stop: function(event, ui) {
-        for (var i = 0; i < selected2.length; i++) {
-            if ($.inArray(selected2[i], $currentlySelected2) >= 0) {
-              $(selected2[i]).removeClass('ui-selected');
-            }
-        }
-        selected2 = [];
-    
-		Q1 = "";
-		$( ".ui-selected", this ).each(function() {
-		var index = $( "#selectable2 li" ).index( this );
-		if(Q1.length==0){
-		Q1 =  ( ( index + 1 )  );
-		}
-		else{
-		Q1 = Q1 + "," + ( ( index + 1 )  );
-		}
-		});
-		if(Q1.length==0){
-
-		}
-		else{
-		classNames = Q1;
-		classNames = classNames.replace("22","SD");
-		classNames = classNames.replace("21","HD");
-		classNames = classNames.replace("20","Western");
-		classNames = classNames.replace("19","War");
-		classNames = classNames.replace("18","Thriller");
-		classNames = classNames.replace("17","Sci-Fi");
-		classNames = classNames.replace("16","Romance");
-		classNames = classNames.replace("15","Mystery");
-		classNames = classNames.replace("14","Musical");
-		classNames = classNames.replace("13","Music");
-		classNames = classNames.replace("12","Horror");
-		classNames = classNames.replace("11","History");
-		classNames = classNames.replace("10","Fantasy");
-		classNames = classNames.replace("9","Family");
-		classNames = classNames.replace("8","Drama");
-		classNames = classNames.replace("7","Crime");
-		classNames = classNames.replace("6","Comic-Book");
-		classNames = classNames.replace("5","Comedy");
-		classNames = classNames.replace("4","Animation");
-		classNames = classNames.replace("3","Adventure");
-		classNames = classNames.replace("2","Action");
-		classNames = classNames.replace("1","Favorites");
-		// document.getElementById('Genres').value = classNames;
-		}
-	},
-    selecting: function(event, ui) {
-        $currentlySelected2.addClass('ui-selected'); // re-apply ui-selected class to currently selected items
-    },
-    selected: function(event, ui) {
-        selected2.push(ui.selected); 
-    }
-});
-
-});
-
-
-
+var mrows=2;
 var theta;
 var radius;
 var rotateXY;
 var rotation;
-
-
-var myApp = angular.module('myApp', ['monospaced.mousewheel']);
 var gobj = [];
+var myVar;
+var pcount=0;
+var filtered = 0;
 
-myApp.factory('movieData', function($http) {
-    var movieData = {};
-		$http.get('moviedata.php').
-  success(function(data) {
-	movieData.count = data.length*2;
-    movieData.data = data;
-	  return movieData;
-  })
-  return movieData;
-})
 
-myApp.controller('MovieFlowCtrl',  function ($scope, $rootScope, movieData) {
+// ======================= Modernizr =============================== //
+
+/* Modernizr 2.0.6 (Custom Build) | MIT & BSD
+ * Build: http://www.modernizr.com/download/#-csstransforms3d-iepp-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes-load
+ */
+;window.Modernizr=function(a,b,c){function C(a,b){var c=a.charAt(0).toUpperCase()+a.substr(1),d=(a+" "+o.join(c+" ")+c).split(" ");return B(d,b)}function B(a,b){for(var d in a)if(k[a[d]]!==c)return b=="pfx"?a[d]:!0;return!1}function A(a,b){return!!~(""+a).indexOf(b)}function z(a,b){return typeof a===b}function y(a,b){return x(n.join(a+";")+(b||""))}function x(a){k.cssText=a}var d="2.0.6",e={},f=!0,g=b.documentElement,h=b.head||b.getElementsByTagName("head")[0],i="modernizr",j=b.createElement(i),k=j.style,l,m=Object.prototype.toString,n=" -webkit- -moz- -o- -ms- -khtml- ".split(" "),o="Webkit Moz O ms Khtml".split(" "),p={},q={},r={},s=[],t=function(a,c,d,e){var f,h,j,k=b.createElement("div");if(parseInt(d,10))while(d--)j=b.createElement("div"),j.id=e?e[d]:i+(d+1),k.appendChild(j);f=["&shy;","<style>",a,"</style>"].join(""),k.id=i,k.innerHTML+=f,g.appendChild(k),h=c(k,a),k.parentNode.removeChild(k);return!!h},u,v={}.hasOwnProperty,w;!z(v,c)&&!z(v.call,c)?w=function(a,b){return v.call(a,b)}:w=function(a,b){return b in a&&z(a.constructor.prototype[b],c)};var D=function(a,c){var d=a.join(""),f=c.length;t(d,function(a,c){var d=b.styleSheets[b.styleSheets.length-1],g=d.cssRules&&d.cssRules[0]?d.cssRules[0].cssText:d.cssText||"",h=a.childNodes,i={};while(f--)i[h[f].id]=h[f];e.csstransforms3d=i.csstransforms3d.offsetLeft===9},f,c)}([,["@media (",n.join("transform-3d),("),i,")","{#csstransforms3d{left:9px;position:absolute}}"].join("")],[,"csstransforms3d"]);p.csstransforms3d=function(){var a=!!B(["perspectiveProperty","WebkitPerspective","MozPerspective","OPerspective","msPerspective"]);a&&"webkitPerspective"in g.style&&(a=e.csstransforms3d);return a};for(var E in p)w(p,E)&&(u=E.toLowerCase(),e[u]=p[E](),s.push((e[u]?"":"no-")+u));x(""),j=l=null,a.attachEvent&&function(){var a=b.createElement("div");a.innerHTML="<elem></elem>";return a.childNodes.length!==1}()&&function(a,b){function s(a){var b=-1;while(++b<g)a.createElement(f[b])}a.iepp=a.iepp||{};var d=a.iepp,e=d.html5elements||"abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",f=e.split("|"),g=f.length,h=new RegExp("(^|\\s)("+e+")","gi"),i=new RegExp("<(/*)("+e+")","gi"),j=/^\s*[\{\}]\s*$/,k=new RegExp("(^|[^\\n]*?\\s)("+e+")([^\\n]*)({[\\n\\w\\W]*?})","gi"),l=b.createDocumentFragment(),m=b.documentElement,n=m.firstChild,o=b.createElement("body"),p=b.createElement("style"),q=/print|all/,r;d.getCSS=function(a,b){if(a+""===c)return"";var e=-1,f=a.length,g,h=[];while(++e<f){g=a[e];if(g.disabled)continue;b=g.media||b,q.test(b)&&h.push(d.getCSS(g.imports,b),g.cssText),b="all"}return h.join("")},d.parseCSS=function(a){var b=[],c;while((c=k.exec(a))!=null)b.push(((j.exec(c[1])?"\n":c[1])+c[2]+c[3]).replace(h,"$1.iepp_$2")+c[4]);return b.join("\n")},d.writeHTML=function(){var a=-1;r=r||b.body;while(++a<g){var c=b.getElementsByTagName(f[a]),d=c.length,e=-1;while(++e<d)c[e].className.indexOf("iepp_")<0&&(c[e].className+=" iepp_"+f[a])}l.appendChild(r),m.appendChild(o),o.className=r.className,o.id=r.id,o.innerHTML=r.innerHTML.replace(i,"<$1font")},d._beforePrint=function(){p.styleSheet.cssText=d.parseCSS(d.getCSS(b.styleSheets,"all")),d.writeHTML()},d.restoreHTML=function(){o.innerHTML="",m.removeChild(o),m.appendChild(r)},d._afterPrint=function(){d.restoreHTML(),p.styleSheet.cssText=""},s(b),s(l);d.disablePP||(n.insertBefore(p,n.firstChild),p.media="print",p.className="iepp-printshim",a.attachEvent("onbeforeprint",d._beforePrint),a.attachEvent("onafterprint",d._afterPrint))}(a,b),e._version=d,e._prefixes=n,e._domPrefixes=o,e.testProp=function(a){return B([a])},e.testAllProps=C,e.testStyles=t,e.prefixed=function(a){return C(a,"pfx")},g.className=g.className.replace(/\bno-js\b/,"")+(f?" js "+s.join(" "):"");return e}(this,this.document),function(a,b,c){function k(a){return!a||a=="loaded"||a=="complete"}function j(){var a=1,b=-1;while(p.length- ++b)if(p[b].s&&!(a=p[b].r))break;a&&g()}function i(a){var c=b.createElement("script"),d;c.src=a.s,c.onreadystatechange=c.onload=function(){!d&&k(c.readyState)&&(d=1,j(),c.onload=c.onreadystatechange=null)},m(function(){d||(d=1,j())},H.errorTimeout),a.e?c.onload():n.parentNode.insertBefore(c,n)}function h(a){var c=b.createElement("link"),d;c.href=a.s,c.rel="stylesheet",c.type="text/css";if(!a.e&&(w||r)){var e=function(a){m(function(){if(!d)try{a.sheet.cssRules.length?(d=1,j()):e(a)}catch(b){b.code==1e3||b.message=="security"||b.message=="denied"?(d=1,m(function(){j()},0)):e(a)}},0)};e(c)}else c.onload=function(){d||(d=1,m(function(){j()},0))},a.e&&c.onload();m(function(){d||(d=1,j())},H.errorTimeout),!a.e&&n.parentNode.insertBefore(c,n)}function g(){var a=p.shift();q=1,a?a.t?m(function(){a.t=="c"?h(a):i(a)},0):(a(),j()):q=0}function f(a,c,d,e,f,h){function i(){!o&&k(l.readyState)&&(r.r=o=1,!q&&j(),l.onload=l.onreadystatechange=null,m(function(){u.removeChild(l)},0))}var l=b.createElement(a),o=0,r={t:d,s:c,e:h};l.src=l.data=c,!s&&(l.style.display="none"),l.width=l.height="0",a!="object"&&(l.type=d),l.onload=l.onreadystatechange=i,a=="img"?l.onerror=i:a=="script"&&(l.onerror=function(){r.e=r.r=1,g()}),p.splice(e,0,r),u.insertBefore(l,s?null:n),m(function(){o||(u.removeChild(l),r.r=r.e=o=1,j())},H.errorTimeout)}function e(a,b,c){var d=b=="c"?z:y;q=0,b=b||"j",C(a)?f(d,a,b,this.i++,l,c):(p.splice(this.i++,0,a),p.length==1&&g());return this}function d(){var a=H;a.loader={load:e,i:0};return a}var l=b.documentElement,m=a.setTimeout,n=b.getElementsByTagName("script")[0],o={}.toString,p=[],q=0,r="MozAppearance"in l.style,s=r&&!!b.createRange().compareNode,t=r&&!s,u=s?l:n.parentNode,v=a.opera&&o.call(a.opera)=="[object Opera]",w="webkitAppearance"in l.style,x=w&&"async"in b.createElement("script"),y=r?"object":v||x?"img":"script",z=w?"img":y,A=Array.isArray||function(a){return o.call(a)=="[object Array]"},B=function(a){return Object(a)===a},C=function(a){return typeof a=="string"},D=function(a){return o.call(a)=="[object Function]"},E=[],F={},G,H;H=function(a){function f(a){var b=a.split("!"),c=E.length,d=b.pop(),e=b.length,f={url:d,origUrl:d,prefixes:b},g,h;for(h=0;h<e;h++)g=F[b[h]],g&&(f=g(f));for(h=0;h<c;h++)f=E[h](f);return f}function e(a,b,e,g,h){var i=f(a),j=i.autoCallback;if(!i.bypass){b&&(b=D(b)?b:b[a]||b[g]||b[a.split("/").pop().split("?")[0]]);if(i.instead)return i.instead(a,b,e,g,h);e.load(i.url,i.forceCSS||!i.forceJS&&/css$/.test(i.url)?"c":c,i.noexec),(D(b)||D(j))&&e.load(function(){d(),b&&b(i.origUrl,h,g),j&&j(i.origUrl,h,g)})}}function b(a,b){function c(a){if(C(a))e(a,h,b,0,d);else if(B(a))for(i in a)a.hasOwnProperty(i)&&e(a[i],h,b,i,d)}var d=!!a.test,f=d?a.yep:a.nope,g=a.load||a.both,h=a.callback,i;c(f),c(g),a.complete&&b.load(a.complete)}var g,h,i=this.yepnope.loader;if(C(a))e(a,0,i,0);else if(A(a))for(g=0;g<a.length;g++)h=a[g],C(h)?e(h,0,i,0):A(h)?H(h):B(h)&&b(h,i);else B(a)&&b(a,i)},H.addPrefix=function(a,b){F[a]=b},H.addFilter=function(a){E.push(a)},H.errorTimeout=1e4,b.readyState==null&&b.addEventListener&&(b.readyState="loading",b.addEventListener("DOMContentLoaded",G=function(){b.removeEventListener("DOMContentLoaded",G,0),b.readyState="complete"},0)),a.yepnope=d()}(this,this.document),Modernizr.load=function(){yepnope.apply(window,[].slice.call(arguments,0))};
+
+var mrows = 2;
+var wheight = $(window).height();
+var sz1;
+var sz2;
+
+  
+
+var transformProp = Modernizr.prefixed('transform');
+
+
+angular.module('MovieCarousel', ['monospaced.mousewheel','ui.router','multi-select'])
+
+	.config(function config($stateProvider, $urlRouterProvider){
+	
+	$urlRouterProvider.otherwise('/');
+		$stateProvider.state("index",{
+			url:"",
+			controller:"MovieFlowCtrl",
+			templateUrl:"templates/normal.html",
+			resolve:{
+			movieData:  function($http){
+				var promise = $http.get('moviedata.php').
+				success(function(data) {
+				var mData={};
+				mData.count = data.length*2;
+				mData.data = data;
+				console.log(mData);
+				return mData;
+				});
+				return promise;
+				}
+			}
+		})	
+		$stateProvider.state("new",{
+			url:"/New",
+			controller:"MovieFlowCtrl",
+			templateUrl:"templates/New.html",
+			resolve:{
+			movieData:  function($http){
+				var promise = $http.get('moviedata.php?type=N').
+				success(function(data) {
+				var mData={};
+				mData.count = data.length*2;
+				mData.data = data;
+				console.log(mData);
+				return mData;
+				});
+				return promise;
+				}
+			}
+		})	
+	})
+
+	
+
+.controller('MovieFlowCtrl', function ($scope, $rootScope,  movieData, $filter) {
+	$scope.carousel = {};
+	$scope.carousel.isHorizontal = true;
     $scope.movies = movieData;
-    $rootScope.genrelist=["Favorites","Action","Adventure","Animation","Comedy","Comic-Book","Crime","Drama","Family","Fantasy","History","Horror","Music","Musical","Mystery","Romance","Sci-Fi","Thriller","War","Western","HD","SD"];
-	$rootScope.genrefilter = [];
-   $scope.$watch('selectedItems', function (data) {
-    });
+	$scope.carousel.element = document.getElementById('carousel');
+	setTimeout( function(){
+	document.body.addClassName('ready');
+	}, 0);
+    $scope.$watch('selectedItems', function (data) {console.log("hmm?");});
     $scope.clearSelection=function() {
 	$rootScope.genrefilter = [];
 	$('#selectable .ui-selected').removeClass('ui-selected');
     }
+   $rootScope.genrelist=["Favorites","Action","Adventure","Animation","Comedy","Comic-Book","Crime","Drama","Family","Fantasy","History","Horror","Music","Musical","Mystery","Romance","Sci-Fi","Thriller","War","Western","HD","SD"];
+    $rootScope.typelist=["TV","Normal","Classic","New"];
+	$rootScope.genrefilter = [];
+
+    $scope.limitgenre= function (genre) {
+     var selectedind = $rootScope.genrefilter.indexOf(genre);
+	  if(selectedind>=0){
+	  $rootScope.genrefilter.splice(selectedind,1);
+	  }
+	  else{
+	  $rootScope.genrefilter.push(genre);
+	  }
+	  $filter('filterMultiple');
+    }
+
 	
-    $scope.dosomething= function (index) {
+    $scope.selectPage= function (index) {
      var selectedind = $rootScope.genrefilter.indexOf($rootScope.genrelist[index]);
 	  if(selectedind>=0){
 	  $rootScope.genrefilter.splice(selectedind,1);
@@ -140,180 +108,142 @@ myApp.controller('MovieFlowCtrl',  function ($scope, $rootScope, movieData) {
 	  else{
 	  $rootScope.genrefilter.push($rootScope.genrelist[index]);
 	  }
-    }
-	$scope.carousel = {};
-	$scope.carousel.element = document.getElementById('carousel');
-	$scope.carousel.rotation = 0;
-	$scope.carousel.panelCount = 0;
-	$scope.carousel.totalPanelCount = $scope.carousel.panelCount;
-	$scope.carousel.theta = 0;
-	$scope.carousel.isHorizontal = true;
-
-
+    }	
 
 	
-	$scope.carousel.init = function(panels) {
-	 console.log("init");
-          
-      $scope.carousel.panelCount = panels;
-       $scope.carousel.modify();
-       $scope.carousel.rotation += -4;
-      setTimeout( function(){
-        document.body.addClassName('ready');
-      }, 0);
-	  
-	      $scope.carousel.toggleCarousel(panels);
-    }
-		  $scope.carousel.sz1 = sz1;
+$rootScope.modify = function(panelCount){
+console.log("modify");
+if(wheight>=930){
+sz1=340;
+sz2=2.4;
+}
+else if(wheight>700 && wheight<929) {
+sz1=283;
+sz2= 3;
+}
+else if(wheight>500 && wheight<699) {
+sz1=221;
+sz2= 3.8;
+}
+else if(wheight>400 && wheight<499) {
+sz1=157;
+sz2=5.2;
+}
+else{
+sz1=125;
+sz2=6.6;
+}
+// sz1 = $(window).width()*0.19;
+
+$scope.carousel.sz1 = sz1;
+$scope.carousel.panelSize = sz1;
+  	// if(typeof $scope.carousel.element.children[0] != 'undefined'){$scope.carousel.panelSize = $scope.carousel.element.children[0].clientWidth;}
+	$scope.carousel.rotateFn = $scope.carousel.isHorizontal ? 'rotateY' : 'rotateX';
+	// console.log(panelCount);
+
+	$scope.carousel.theta = 359 / ((panelCount+mrows));
+	theta = $scope.carousel.theta;
+	rotateXY = $scope.carousel.rotateFn;
+	var sizeadj = 15;
+	if(mrows == 1){sizeadj = 0.8;}	  
+	if(mrows == 2){sizeadj = sz2;}	  
+	
+	$scope.carousel.radius = ($scope.carousel.panelSize*(mrows+panelCount/mrows))/(2*Math.PI); //Math.round(( $scope.carousel.panelSize/sizeadj) / Math.tan( Math.PI / (($scope.carousel.panelCount+mrows)) ) );
+	radius = $scope.carousel.radius;
+	$scope.carousel.rotation = Math.round( $scope.carousel.rotation / $scope.carousel.theta ) * $scope.carousel.theta;
+	rotation = $scope.carousel.rotation;
+	$scope.carousel.rotation = -4;
+	$scope.carousel.element.style[ transformProp ] = 'translateZ(-' + radius + 'px) ' + rotateXY + '(' + rotation + 'deg)';
+  
+	// if(typeof $scope.carousel.element.children[0] != 'undefined'){$scope.carousel.sz1 = $scope.carousel.element.children[0].clientWidth;}
 
 	$scope.carousel.rows = function(index) {
-		if(mrows==2 && (index+1)%2 ==0){return $scope.carousel.sz1;}
-		if(mrows==3 && (index+1)%3 ==0){return $scope.carousel.sz1;}
-		if(mrows==3 && (index+1)%2 ==0){return $scope.carousel.sz1;}
-		return 0;
+	if(mrows==2 && (index+1)%2 ==0){return $scope.carousel.sz1;}
+	if(mrows==3 && (index+1)%3 ==0){return $scope.carousel.sz1;}
+	if(mrows==3 && (index+1)%2 ==0){return $scope.carousel.sz1;}
+	return 0;
+	}
+
+
+   }
+   
+   
+	$rootScope.toggleCarousel = function(panelCount){
+console.log("toggleCarousel");
+	if(panelCount > 20){
+		$('#container').addClass('container');
+		$('figure').addClass('figure');
+		filtered = 0;
+		$rootScope.modify(panelCount);
+	}
+	else{
+		$('figure').attr('style', '');
+		$('#carousel').attr('style', 'transform: translate(0px,0px)');
+		$('#container').removeClass('container');
+		$('figure').removeClass('figure');
+		filtered = 1;
 		}
-	
-	$scope.carousel.modify = function() {
-		console.log("modify");
-		var panel, angle, i;
-		$scope.carousel.panelSize = $scope.carousel.element[ $scope.carousel.isHorizontal ? 'offsetWidth' : 'offsetHeight' ];
-		$scope.carousel.rotateFn = $scope.carousel.isHorizontal ? 'rotateY' : 'rotateX';
-		$scope.carousel.theta = 359 / (($scope.carousel.panelCount+mrows)/mrows);
-		theta = $scope.carousel.theta;
-		rotateXY = $scope.carousel.rotateFn;
-		var sizeadj = 15;
-		if(mrows == 1){sizeadj = 0.8;}	  
-		if(mrows == 2){sizeadj = sz2;}	  
+	$scope.carousel.element.style[ transformProp ] = 'translateZ(-' + radius + 'px) ' + rotateXY + '(' + rotation + 'deg)';
+   }
 
-		$scope.carousel.radius = Math.round(( $scope.carousel.panelSize/sizeadj) / Math.tan( Math.PI / (($scope.carousel.panelCount+mrows)/mrows) ) );
-		radius = $scope.carousel.radius;
-		// adjust rotation so panels are always flat
-		$scope.carousel.rotation = Math.round( $scope.carousel.rotation / $scope.carousel.theta ) * $scope.carousel.theta;
-		rotation = $scope.carousel.rotation;
-		carousel.style[ transformProp ] = 'translateZ(-' + radius + 'px) ' + rotateXY + '(' + rotation + 'deg)';
-		}
+   $rootScope.modify(movieData.data.length);
 
+})
 
-
-
-
-
-	$scope.carousel.toggleCarousel = function(panelcount){
-		if(panelcount > 20){
-			$('#container').addClass('container');
-			$('figure').addClass('figure');
-			filtered = 0;
-			$scope.carousel.modify();
-		}
-		else{
-			// $('figure').attr('style', '');
-			$('#carousel').attr('style', 'transform: translate(0px,0px)');
-			$('#container').removeClass('container');
-			$('figure').removeClass('figure');
-			filtered = 1;
-			}
-		carousel.style[ transformProp ] = 'translateZ(-' + radius + 'px) ' + rotateXY + '(' + rotation + 'deg)';
-		}
-
-
-	})
-
-
-    myApp.directive('scrollDown', [function($parse){
-      return function(scope, element) {
-        element[0].parentNode.scrollTop = 999999;
-      };
-    }]);
-
-    myApp.directive('userAgent', [function(){
-      return function(scope) {
-        scope.ua = window.navigator.userAgent;
-      };
-    }]);
-	
-	
-myApp.directive('movies', function() {
-    return {
-        link: function($scope, element, attrs) {
-            // Trigger when number of children changes,
-            // including by directives like ng-repeat
-            var watch = $scope.$watch(function() {
-                return element.children().length;
-            }, function() {
-                // Wait for templates to render
-                $scope.$evalAsync(function() {
-                    // Finally, directives are evaluated
-                    // and templates are renderer here
-                    var children = element.children();
-                    if(children.length>0){$scope.carousel.init(children.length*2);}
-                });
-            });
-        },
-    };
-});
-
-myApp.filter('filterMultiple',['$filter','$rootScope',function ($filter,$rootScope) {
+.filter('filterMultiple',["$rootScope", '$filter',  function ($rootScope,$filter) {
 return function (items, keyObj) {
-    var filterObj = {
-        data:items,
-        filteredData:[],
-        applyFilter : function(obj,key){
-			obj = $rootScope.genrefilter;
-            var fData = [];
-            if (this.filteredData.length == 0)
-                this.filteredData = this.data;
-            if (obj){
-                var fObj = {};
-                if (!angular.isArray(obj)){
-                    fObj[key] = obj;
-                    fData = fData.concat($filter('filter')(this.filteredData,fObj));
-                } else if (angular.isArray(obj)){
-                    if (obj.length > 0){
-                        for (var i=0;i<obj.length;i++){
-                            if (angular.isDefined(obj[i])){
-                                fObj[key] = obj[i];
-								// INclusive filter, Match ANY
-                                // fData = fData.concat($filter('filter')(this.filteredData,fObj));    
-								// EXclusive filter, Match ALL
-                                this.filteredData = $filter('filter')(this.filteredData,fObj);    
-                            }
-                        }
+console.log("filterMultiple");
 
-                   }
-                }
-                if (fData.length > 0){
-                    this.filteredData = fData;
-                }
-				
-            }
-        }
-    };
-    if (keyObj){
-        angular.forEach(keyObj,function(obj,key){
-            filterObj.applyFilter(obj,key);
-        });
- 	$rootScope.genrelist=[];
-	  if(typeof filterObj.filteredData !== 'undefined'){
-	for (var i=0;i<filterObj.filteredData.length;i++){
-		for (var z=0;z<filterObj.filteredData[i].genres.length;z++){
-			if($rootScope.genrelist.indexOf(filterObj.filteredData[i].genres[z])==-1)
+	var wcSearch = keyObj.wildcard;
+	var genres = keyObj.genres;
+	var filterObj=[];
+	
+	for(var i=0;i<items.length;i++){
+	
+	var filtered = true;
+
+	if(typeof wcSearch === 'undefined'){}
+	else if(wcSearch.length > 0){
+	if(wcSearch.toUpperCase().substring(0,wcSearch.length) != items[i].title.toUpperCase().substring(0,wcSearch.length) && wcSearch.toUpperCase().substring(0,wcSearch.length) != items[i].sortTitle.toUpperCase().substring(0,wcSearch.length)){filtered = false;}
+	}
+
+	if(filtered == true){
+	
+		for(var x=0;x<$rootScope.genrefilter.length;x++){
+	console.log(items[i].genres.indexOf($rootScope.genrefilter[x]));
+	console.log($rootScope.genrefilter[x]);
+			if(items[i].genres.indexOf($rootScope.genrefilter[x])<0){filtered = false;}
+		}	
+	}
+
+	if(filtered == true){
+		filterObj.push(items[i]);
+	}
+	
+	}
+	 	$rootScope.genrelist=[];
+	  if(typeof filterObj !== 'undefined'){
+	for (var i=0;i<filterObj.length;i++){
+		for (var z=0;z<filterObj[i].genres.length;z++){
+			if($rootScope.genrelist.indexOf(filterObj[i].genres[z])==-1)
 			{
-			if(filterObj.filteredData[i].genres[z] !="")
-				{$rootScope.genrelist.push(filterObj.filteredData[i].genres[z]);}
+			if(filterObj[i].genres[z] !="")
+				{$rootScope.genrelist.push(filterObj[i].genres[z]);}
 			}
 		}
 	}
 	}
 	$rootScope.genrelist.sort();
-   }
-   if(angular.isDefined(carousel.transform)){carousel.transform();}
-    return filterObj.filteredData;
+	console.log(filterObj);
+	$rootScope.toggleCarousel(filterObj.length);
+    return filterObj;
 }
-}]);
+}])
 
 
-myApp.filter('unique', function() {
-    return function(input, key) {
+.filter('unique', function() {
+ console.log("unique");
+   return function(input, key) {
         var unique = {};
         var uniqueList = [];
         for(var i = 0; i < input.length; i++){
@@ -324,32 +254,6 @@ myApp.filter('unique', function() {
         }
         return uniqueList;
     };
-});
-
-
-
-myApp.directive('uiSelectable', function ($parse) {
-    return {
-        link: function (scope, element, attrs, ctrl) {
-        scope.$on('clearselection', function (event, genre) {
-          element.find('.ui-selected').removeClass('ui-selected')
-       });
-
-            element.selectable({
-               stop: function (evt, ui) {
-                   var collection = scope.$eval(attrs.docArray)
-                    var selected = element.find('ol.parent.ui-selected').map(function () {
-                        var idx = $(this).index();
-                        return { genre: collection[idx] }
-                    }).get();
-                    scope.selectedItems = selected;
-                    scope.$apply()
-                }
-            });
-        }
-    }
-});
-
-
+})
 
 
